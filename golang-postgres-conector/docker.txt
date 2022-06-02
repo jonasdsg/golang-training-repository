@@ -1,0 +1,19 @@
+Preparing the docker container
+docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres postgres:latest
+
+Executing as iterative mode (when there's only a single container instance)
+docker exec -it $(docker container ls -q) sh
+
+creating the person table.
+su postgres
+psql
+\c postgres
+
+CREATE TABLE person( id serial primary key, first_name varchar(80), middle_name varchar(80), last_name varchar(80), contacts varchar(255));
+
+Inserting data
+INSERT INTO person(first_name,middle_name, last_name,contacts) VALUES 
+    ('Mark','Butter','Gates','markb@gmail.com'),
+    ('Noa','Cheese','Keys','noakey@outlook.com'),
+    ('Olivia','Peanut','Spoon','olivps@indie.co'),
+    ('Emma','Kilo','Watts','emmawatts@askaban.co');
