@@ -20,6 +20,10 @@ func main() {
 		panic(err)
 	}
 	defer conn.Close()
+	//	Insertin someone
+	if _, err := conn.Exec("insert into person(first_name, middle_name, last_name, contacts) values ('Kath','Glass', 'Pool', 'kgpool@git.co')"); err != nil {
+		panic(err)
+	}
 
 	if rows, err := conn.Query("select * from person"); err != nil {
 		panic(err)
