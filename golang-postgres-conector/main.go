@@ -3,11 +3,13 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"golang-training-repository/golang-postgres-conector/model"
 
 	_ "github.com/lib/pq"
 )
 
 func main() {
+	people := []model.Person{}
 	//Data source information.
 	ds := "user=postgres dbname=postgres password=postgres sslmode=disable"
 	//openning a database conection
@@ -19,26 +21,17 @@ func main() {
 	}
 	defer conn.Close()
 
-	rows, err := conn.Query("select * from person")
-
-	if err != nil {
+	if rows, err := conn.Query("select * from person"); err != nil {
 		panic(err)
-	}
+	} else {
 
-	people := []Person{}
-	for rows.Next() {
-		person := Person{}
-		rows.Scan(&person.Id, &person.First_name, &person.Middle_name, &person.Last_name, &person.Contacts)
-		people = append(people, person)
+		for rows.Next() {
+			person := model.Person{}
+			rows.Scan(&person.Id, &person.First_name, &person.Middle_name, &person.Last_name, &person.Contacts)
+			people = append(people, person)
+		}
+
 	}
 
 	fmt.Println(people)
-}
-
-type Person struct {
-	Id          int
-	First_name  string
-	Middle_name string
-	Last_name   string
-	Contacts    string
 }

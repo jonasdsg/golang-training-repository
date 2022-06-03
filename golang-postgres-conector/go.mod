@@ -1,4 +1,4 @@
-module golang/golang-postgres-conector
+module golang-training-repository/golang-postgres-conector
 
 go 1.13
 
