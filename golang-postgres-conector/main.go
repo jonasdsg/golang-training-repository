@@ -13,14 +13,21 @@ var Conn *sql.DB
 
 func main() {
 	Conn = Connect()
-	Insert(model.Person{
-		Id:          0,
-		First_name:  "Cath",
-		Middle_name: "Little",
-		Last_name:   "Pop",
-		Contacts:    "catlittlepop@candies.co",
-	})
+	Insert(CreatePerson())
 	fmt.Println(FindAll())
+}
+
+func CreatePerson() model.Person {
+	p := model.Person{}
+	fmt.Print("First name: ")
+	fmt.Scanf("%s", &p.First_name)
+	fmt.Print("Middle name: ")
+	fmt.Scanf("%s", &p.Middle_name)
+	fmt.Print("Last name: ")
+	fmt.Scanf("%s", &p.Last_name)
+	fmt.Print("Contact: ")
+	fmt.Scanf("%s", &p.Contacts)
+	return p
 }
 
 func Connect() *sql.DB {
