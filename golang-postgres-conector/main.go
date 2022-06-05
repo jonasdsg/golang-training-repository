@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"golang-training-repository/golang-postgres-conector/model"
 	"log"
+	"strings"
 
 	_ "github.com/lib/pq"
 )
@@ -12,9 +13,18 @@ import (
 var Conn *sql.DB
 
 func main() {
+	var choice string
 	Conn = Connect()
-	Insert(CreatePerson())
-	fmt.Println(FindAll())
+	fmt.Print("Choose one action\n[I]nsert\n[D]elete\n[L]ist\nType :")
+	fmt.Scanf("%s", &choice)
+	switch strings.ToUpper(choice) {
+	case "I":
+		Insert(CreatePerson())
+	case "D":
+		DeletePerson()
+	case "L":
+		ListPeople()
+	}
 }
 
 func CreatePerson() model.Person {
@@ -39,6 +49,26 @@ func Connect() *sql.DB {
 		panic(err)
 	} else {
 		return conn
+	}
+}
+func DeletePerson() {
+	var id int
+	ListPeople()
+	fmt.Println("Choose an Id: ")
+	fmt.Scanf("%d", &id)
+	Delete(id)
+}
+
+func Delete(id int) bool {
+	if _, err := Conn.Exec("DELETE FROM person WHERE id = $1", id); err != nil {
+		panic(err)
+	}
+	return true
+}
+
+func ListPeople() {
+	for _, p := range FindAll() {
+		fmt.Println(p.Id, "-", p.First_name, p.Middle_name, p.Last_name, ",", p.Contacts)
 	}
 }
 
